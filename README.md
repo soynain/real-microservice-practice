@@ -27,15 +27,20 @@ de interceptors, librerias para handlers de error con returns customizados y emp
 ofrecer un cascaron para tu trabajo papasito, es repasar conceptos de cloud de una manera sencilla.
 
 AWS Tópicos a cubrir:
+
 -Conexión externa con RDS (Instancia generada y probada en local)
+
 -Orquestación de contenedores con EKS (por hacer)
 -Pull de imagenes creadas con ECR para evitar pulls de docker hub (por hacer)
+
 -Apiproxy sobre el endpoint post (sin auth porque eso significaria hacer un micro intermediario e implementar cierta herramienta
 que empieza con K y termina con K) (por hacer, solo api proxy)
 
 Avances a nivel micro
+
 -Micros a y b creados
 -Services generados
+
 -Secrets implementados en el builder local y de docker por medio de un scroipt sh
 que inyecta variables temporales por sesión de consola en un script batch aunque lo correcto
 es una virtual machine ambientada ya con esas variables de acuerdo al stage de un pipeline
@@ -63,3 +68,8 @@ y con un monolito super grande.
 
 Es la estrategia del divide y vencerás.
 
+Mini avances 18/12 Hoy estudiamos conceptos básicos del aws, los iam, roles, grupos, security groups para instancias EC2 y conceptillos
+que no me quise memorizar mucho como generaciones y tipos de instancias. También checamos los vpc's y los auto scaling group, load balancers.
+
+Próxima tarea a realizar: configurar una IAM con acceso al servicio de amazon ECR, con privilegios de lectura y escritura,
+para pushear nuestras imagenes docker al ECR. De ahí configurar el EKS.
