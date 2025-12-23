@@ -93,3 +93,43 @@ Repasar muy bien el concepto del IAM, y de como simplemented no debemos usar roo
 con ECR no hay tanto problema pero si es buena práctica al parecer.
 
 Solo así no tendrás errores, desde cloudformation puedes ver el progreso de la creación de tu primer cluster de EKS.
+
+RETAKE 23/12/2025
+
+Aquí van los comandos básicos. El aws CLI lo instalas perfecto con la documentación y configuras tus credes para el ECR:
+
+-Desde la sección de ECR, ya te da los comandos para pushar tus imagenes
+<img width="1395" height="340" alt="image" src="https://github.com/user-attachments/assets/16857167-7f7f-4e58-90f6-6153fb852769" />
+
+Cuando ya tengas tus ECR'S pusheadas, configura EKSCTL, es el gestor CLI de Amazon para los clusters de Kubernetes. Se encarga
+de configurarlo en la nube y de ayudarnos a deployar nuestros YAMLS. Después tendrás que generar tu primer yaml de cluster.
+
+Como aquí estamos aprendiendo y nuestra especialidad no es la infraestructura, el yaml puede quedar así:
+
+<img width="1379" height="993" alt="image" src="https://github.com/user-attachments/assets/90aa9d3b-bdc1-4179-8004-47741d1d9c7a" />
+
+Y ejecutas el comando eksctl create cluster -f tuarchivo.yml. Te puede salir el error de:
+
+ Error: checking AWS STS access – cannot get role ARN for current session: operation error STS: GetCallerIdentity, get identity: get credentials: failed to refresh cached credentials, no EC2 IMDS role found, operation error ec2imds: GetMetadata, canceled, context deadline exceeded
+
+Para solucionarlo, tipea en tu CMD aws configure, te pedirá access key y secret access key.
+
+Vete al panel de IAM, create un usuario y añadele politicas de administrador, despúés te vas a esta sección:
+<img width="2092" height="959" alt="image" src="https://github.com/user-attachments/assets/d93d52b5-8be7-4051-aad7-712071403b36" />
+
+Desde la pestaña de seguriad creas una clave de acceso y listo, con el comando
+
+-aws configure
+
+Metes los dos secrets, el tercer parametro vacio y en el último pones json.
+
+Cuando vayas a crear tu primer cluster, tardará de 15 a 20 minutos, si es éxitoso, te saldrá esta pantalla:
+
+<img width="1102" height="156" alt="image" src="https://github.com/user-attachments/assets/c3a69a21-1a4e-4090-88bc-dfe9f194ae78" />
+
+<img width="602" height="76" alt="image" src="https://github.com/user-attachments/assets/0b863ffc-9359-4b99-abfa-eea2be1538ea" />
+
+Listo, tu primer cluster, ahora a deployar las imagenes
+
+
+
