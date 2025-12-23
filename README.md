@@ -73,3 +73,11 @@ que no me quise memorizar mucho como generaciones y tipos de instancias. Tambié
 
 Próxima tarea a realizar: configurar una IAM con acceso al servicio de amazon ECR, con privilegios de lectura y escritura,
 para pushear nuestras imagenes docker al ECR. De ahí configurar el EKS.
+
+Avances 23/12/2025
+<img width="1237" height="347" alt="image" src="https://github.com/user-attachments/assets/e0766981-cd57-4b2d-a9af-b45cc4ea1849" />
+
+Ya subí dos imagenes docker al Amazon ECR, sin embargo estoy teniendo dificultades al querer crear un cluster con amazon EKS
+<img width="1092" height="126" alt="image" src="https://github.com/user-attachments/assets/09ec8a5b-9ea5-4b6c-9f89-f923269f0b62" />
+
+Aun no me cuadra porque me sale este error. Seguiré investigando
