@@ -81,3 +81,15 @@ Ya subí dos imagenes docker al Amazon ECR, sin embargo estoy teniendo dificulta
 <img width="1092" height="126" alt="image" src="https://github.com/user-attachments/assets/09ec8a5b-9ea5-4b6c-9f89-f923269f0b62" />
 
 Aun no me cuadra porque me sale este error. Seguiré investigando
+
+Al parecer era por un tema de que se tiene que crear un access key con un usuario IAM, con privilegios de administrador
+<img width="1167" height="61" alt="image" src="https://github.com/user-attachments/assets/af46cbf6-dcec-4413-be7b-9833ad59d915" />
+
+
+Ok, listo, a tenet en cuenta algo importante
+<img width="1552" height="213" alt="image" src="https://github.com/user-attachments/assets/24778a7d-4775-4420-b963-b09f798c7d8e" />
+
+Repasar muy bien el concepto del IAM, y de como simplemented no debemos usar roots para manipular ciertos comandos del CLI,
+con ECR no hay tanto problema pero si es buena práctica al parecer.
+
+Solo así no tendrás errores, desde cloudformation puedes ver el progreso de la creación de tu primer cluster de EKS.
