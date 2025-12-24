@@ -194,3 +194,18 @@ Y puedes ver los logs de tu pod en local ^^ puesto que tienes tu imagen vinculad
 
 
 Ahora solo me falta despegar microB y configurar su bdd con aurora... Y LISTO, TU PRIMER DESPLIEGUE DE MICROS CON EKS, ECR y AURORA RDS.
+
+Listo, 23/12/2025, hemos aprendido a montar una infra básica en AWS para microservicios en java
+
+<img width="1776" height="917" alt="image" src="https://github.com/user-attachments/assets/bf7d70a2-cdcf-4298-a733-d9eed685e224" />
+
+Con aurora, ECR y EKS puedes contruir un ecosistema donde tu puedes configurar ciertos aspectos a la par de contar
+con las ventajas que aws te da, si cotizas chido, no necesitas preocuparte por replicas, pero puedes cuidar eso tu.
+
+Los tópicos más avanzados de kubernetes como ingress, egress y problemas como los temas de la perdida de conexion de
+algunos pods con wsbes por el HPA y esos temas ya los veremos en LOCAL. Me reservaré a conservar
+este repo privado, tu chambeale para armar tu cascaron :p
+
+Feliz navidad, ha sido divertido absorver conocimientos en base a estándares de la industria real.
+
+PD: No sé si le configure de extra el api proxy.
