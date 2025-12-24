@@ -131,5 +131,66 @@ Cuando vayas a crear tu primer cluster, tardará de 15 a 20 minutos, si es éxit
 
 Listo, tu primer cluster, ahora a deployar las imagenes
 
+Otro update más, ahora ya configuramos los ingresses:
+
+Entonces el pex funciona así: service>ingress>ingressclass, para el service se declara un internal:
+<img width="1629" height="796" alt="image" src="https://github.com/user-attachments/assets/128b4e54-d566-4bd8-984b-c721c254c13c" />
+
+Internal service es para vincular tu app a la exposición de su puerto, el ingress para exponer paths (Istio checker) y el ingress class sirve para que el balanceador de cargas
+de aws haga su chamba en base al ingress que tu estás configurando we.
+
+Ahora en comandos, si tiene su pequeña gracia:
+
+Cuando tienes estos 3 archivos, antes de aplicar sus respectivos kubectl apply -f blablabla... requieres de una herramiente llamada HELM para
+poder instalar el AWS Load Balancer Controller, el cual te ayuda a levantar tus ingresses class a internet.
+
+Descargalo y configura el binario en tu maquiinita como variable de entorno:
+
+<img width="1040" height="620" alt="image" src="https://github.com/user-attachments/assets/cc42875c-af39-4d0a-9fba-e691b2759954" />
+
+Los binarios bajalos de aqui, para su propósito básico funciona, los canarys funcionan perfecto 
+
+<img width="2006" height="796" alt="image" src="https://github.com/user-attachments/assets/8c4caec2-b09d-420e-b90f-5a0c0a55b77e" />
+
+Ahora, haz una instalación del AWS Load Balancer Controller con estos comandos:
+*helm repo add eks https://aws.github.io/eks-charts
+*helm repo update
+*helm install aws-load-balancer-controller eks/aws-load-balancer-controller -n kube-system --set clusterName=main-cluster --set serviceAccount.create=false --set serviceAccount.name=aws-load-balancer-controller
+De a guebo tienes que instalarlo en el namespace kube-system, no puedes hacerlo en el default, aún asi no hay pedo. Puedes tener namespaces separados.
+
+Después tienes que ejecutar un comando para instalar una politica sobre el usuario de IAM que estés manipulando para poder crear tus roles
+
+<img width="1231" height="246" alt="image" src="https://github.com/user-attachments/assets/ef4095be-aabf-44aa-935b-c61e7fe04274" />
+
+Te saldrá este error, ejecutas eksctl utils associate-iam-oidc-provider --cluster=main-cluster --approve y ya te deja, porque debes asignar un OIDC a tu IAM, que es como
+una clase de conexión entre tu consola y la de AWS.
+
+Investiga como crear politicas, crearás una, en la sección del json copiate y pegate todo este json https://github.com/kubernetes-sigs/aws-load-balancer-controller/blob/main/docs/install/iam_policy.json
+y nombralo como AWSLoadBalancerControllerIAMPolicy.
+
+Ahora, hay que crear una politica que anexaremos con nuestro usuario IAM actual para saber tu usuario ejecuta aws sts get-caller-identity, te saldrá
+un json con 3 campos. Ejecutarás el siguiente comando, sustituirás el NUMERO_DE_TU_ROL_WE con el campo account que es númerico.
+
+eksctl create iamserviceaccount --cluster=main-cluster --namespace=kube-system --name=aws-load-balancer-controller --role-name AmazonEKSLoadBalancerControllerRole --attach-policy-arn=arn:aws:iam::NUMERO_DE_TU_ROL_WE:policy/AWSLoadBalancerControllerIAMPolicy --approve --override-existing-serviceaccounts
+
+Si te sale así, es un éxito: 
+
+<img width="1180" height="344" alt="image" src="https://github.com/user-attachments/assets/8dd24565-d4bb-428d-a1dd-239da39042e5" />
+
+Y también lo puedes comprobar en cloudformation
+
+<img width="1262" height="165" alt="image" src="https://github.com/user-attachments/assets/1a005e26-df34-406d-87ed-4585965c2ce0" />
+
+Si todo te sale chido, te saldrá en el campo address de tu ingress un DNS público asignado por Amazon, y listo, tu primer despliegue
+
+<img width="1170" height="225" alt="image" src="https://github.com/user-attachments/assets/77a19eab-83c8-497d-a9fa-fee59aa38680" />
+
+Y puedes ver los logs de tu pod en local ^^ puesto que tienes tu imagen vinculada por medio del ingress.
 
 
+<img width="1125" height="461" alt="image" src="https://github.com/user-attachments/assets/58de1942-7979-4729-81d0-f786fc7dae9c" />
+
+<img width="1517" height="744" alt="image" src="https://github.com/user-attachments/assets/4e0c0a4a-163a-4e11-b0bc-377383265996" />
+
+
+Ahora solo me falta despegar microB y configurar su bdd con aurora... Y LISTO, TU PRIMER DESPLIEGUE DE MICROS CON EKS, ECR y AURORA RDS.
