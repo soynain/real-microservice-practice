@@ -153,9 +153,13 @@ Los binarios bajalos de aqui, para su propósito básico funciona, los canarys f
 <img width="2006" height="796" alt="image" src="https://github.com/user-attachments/assets/8c4caec2-b09d-420e-b90f-5a0c0a55b77e" />
 
 Ahora, haz una instalación del AWS Load Balancer Controller con estos comandos:
+
 *helm repo add eks https://aws.github.io/eks-charts
+
 *helm repo update
+
 *helm install aws-load-balancer-controller eks/aws-load-balancer-controller -n kube-system --set clusterName=main-cluster --set serviceAccount.create=false --set serviceAccount.name=aws-load-balancer-controller
+
 De a guebo tienes que instalarlo en el namespace kube-system, no puedes hacerlo en el default, aún asi no hay pedo. Puedes tener namespaces separados.
 
 Después tienes que ejecutar un comando para instalar una politica sobre el usuario de IAM que estés manipulando para poder crear tus roles
@@ -209,3 +213,50 @@ este repo privado, tu chambeale para armar tu cascaron :p
 Feliz navidad, ha sido divertido absorver conocimientos en base a estándares de la industria real.
 
 PD: No sé si le configure de extra el api proxy.
+
+Y que si hicimos la apigee inge su. Aprendimos dos nuevos conceptos:
+
+1.NLB Network Load Balancer, más rápido y basado en red, no funciona por mapeos de paths como ALB.
+
+2.ALB Application load balancer, es tu ingress tradicional.
+
+Hoy en día puedes implementar api gateway en ambas, sin embargo su diferencia radica en la seguridad y la exposicion, tu api
+es interna? los micros se usan nomás dentro? vete por ALB declarativo, necesitas monetizar, añadir más seguridad y parseas request
+and respondes de json a XML o temas así? NLB. Uno es más rápido que otro en latencia. Otra cuestion con las NLB es el control de cuotas
+y protección contra usuarios, un tipo rate limitter.
+
+Faltan por pulir las cosas, porque al final dependiendo la organización, son temas que ya están implementados. No en todo tienes
+que andar implementando estas madres.
+
+Anexo evidencia, aquí le pegamos al micro desde el api gateway, no directo del loadbalancer de kubernetes, es mayor seguridad.
+
+<img width="1625" height="861" alt="image" src="https://github.com/user-attachments/assets/9b47d446-d432-454a-808e-ceed336a4137" />
+
+<img width="2126" height="412" alt="image" src="https://github.com/user-attachments/assets/f16e5553-2cd2-4525-977f-d71e5e33a0ca" />
+
+
+También puedes anexar con NLB en base a la capa 4 del html para sobreescribir paths que, en tu microa los pusiste mal o que no quieres modificar mucho
+a nivel front, y esto te lo agiliza
+
+<img width="1586" height="774" alt="image" src="https://github.com/user-attachments/assets/d10c1834-2fda-4861-9715-969d97cfd26b" />
+
+Las integraciones así lucen, van de la mano con los load balancers delk ec2 
+
+<img width="732" height="623" alt="image" src="https://github.com/user-attachments/assets/08ead371-f63e-4364-a2a3-f88deff7767c" />
+
+Ya que, puedes visualizar la salud de los mismos en este apartado:
+
+<img width="790" height="831" alt="image" src="https://github.com/user-attachments/assets/4554194d-297c-424e-883a-48ee394a4da1" />
+
+Depende de las escalabilidades. NLB vs ALB && API HTTP vs apirest. Miiddlewares con lambda vs api gateway.
+
+Tiene su truco, creo apigee de google es más entendible y tiene más potencia. No diferencia entre rest o HTTP. Es más global.
+
+Con esto ya borro mis recursos de AWS para no facturar más y ya seria todo en esta práctica. Ahora domino la NUBE. Y creo desplegar monolitos
+de spring boot en EC2 debe ser menos batalloso que entender el despliegue de ecosistema.
+
+PRÓXIMOS TEMAS A ESTUDIAR: Lambas, ETL's with spark (ya no scripts). Repaso pequeño de los roles y esas cuestiones. VPC's, subnets, policys.
+
+Creo para temas más reales, me guiaré estudiando los códigos de las empresas y ahí voy pirando.
+
+También MCP´servers.
